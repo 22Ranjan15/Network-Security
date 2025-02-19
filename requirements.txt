@@ -7,6 +7,10 @@ scikit-learn
 pymongo
 mlflow
 pyaml
-
+dagshub
+retry
+fastapi
+uvicorn
+python-multipart
 
 # -e .

@@ -22,7 +22,10 @@ from sklearn.ensemble import (
 )
 
 import mlflow
-
+from retry import retry
+import dagshub
+dagshub.init(repo_owner='22Ranjan15', repo_name='Network-Security', mlflow=True)
+os.environ['MLFLOW_TRACKING_TIMEOUT'] = '300'  # Set timeout to 300 seconds
 
 class ModelTrainer:
     def __init__(self,model_trainer_config:ModelTrainerConfig, data_transformation_artifact:DataTransformationArtifact):
@@ -33,7 +36,7 @@ class ModelTrainer:
         except Exception as e:
             raise NetworkSecurityException(e,sys)
 
-
+    @retry(tries=3, delay=5)
     def track_mlflow(self,best_model,classificationmetric):
         # mlflow.set_registry_uri("https://dagshub.com/krishnaik06/networksecurity.mlflow")
         # tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
